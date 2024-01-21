@@ -7,4 +7,5 @@
     {
         protected $table = 'users';
         protected $useAutoIncrement = true;
+        protected $allowedFields = ['nama', 'password', 'username', 'role_id'];
     }
