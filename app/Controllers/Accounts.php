@@ -6,6 +6,9 @@ use App\Models\UsersModel;
 
 class Accounts extends BaseController
 {
+    private function hash_password($password){
+        return password_hash($password, PASSWORD_BCRYPT);
+     }
     public function login()
     {
         if ($this->session?->get('logged_in')){
@@ -17,15 +20,15 @@ class Accounts extends BaseController
             'password' => ['required', 'min_length[6]'],
         ]);
         $isDataValid = $validation->withRequest($this->request)->run();
+        $password = $this->request->getPost('password') ?? '';
 
         if($isDataValid)
         {
             $accounts = new UsersModel();
             $auth = $accounts->where([
                 'username' => $this->request->getPost('username'),
-                'password' => $this->request->getPost('password'),
             ])->first();
-            if($auth)
+            if($auth && password_verify($password, $auth['password']))
             {
                 $data = array(
                     'username' 	=> $auth['username'],
@@ -56,7 +59,7 @@ class Accounts extends BaseController
             $accounts = new UsersModel();
             $accounts->insert([
                 'nama' => $this->request->getPost('fullname'),
-                'password' => $this->request->getPost('password'),
+                'password' => $this->hash_password($this->request->getPost('password')),
                 'username' => $this->request->getPost('username'),
                 'role_id' => 1,
             ]);
