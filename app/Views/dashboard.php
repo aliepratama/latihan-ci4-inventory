@@ -7,6 +7,6 @@
 </head>
 <body>
     <h2>Ini adalah dashboard</h2>
-    <a href="<?= base_url('/') ?>">Logout</a>
+    <a href="<?= base_url('/logout') ?>">Logout</a>
 </body>
 </html>

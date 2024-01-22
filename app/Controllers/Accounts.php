@@ -8,6 +8,9 @@ class Accounts extends BaseController
 {
     public function login()
     {
+        if ($this->session?->get('logged_in')){
+            return redirect()->to('/dashboard');
+        }
         $validation = \Config\Services::validation();
         $validation->setRules([
             'username' => ['required', 'max_length[20]'],
@@ -24,6 +27,11 @@ class Accounts extends BaseController
             ])->first();
             if($auth)
             {
+                $data = array(
+                    'username' 	=> $auth['username'],
+                    'logged_in'	=> true
+                );
+                $this->session->set($data);
                 return redirect()->to('/dashboard');
             }
             return redirect()->to('/');
@@ -33,6 +41,9 @@ class Accounts extends BaseController
 
     public function register()
     {
+        if ($this->session?->get('logged_in')){
+            return redirect()->to('/dashboard');
+        }
         $validation = \Config\Services::validation();
         $validation->setRules([
             'username' => ['required', 'max_length[20]'],
@@ -64,5 +75,11 @@ class Accounts extends BaseController
     public function dashboard(): string
     {
         return view('dashboard');
+    }
+    public function logout()
+    {
+        $data = array('username', 'logged_in');
+        $this->session->remove($data);
+        return redirect()->to('/');
     }
 }
