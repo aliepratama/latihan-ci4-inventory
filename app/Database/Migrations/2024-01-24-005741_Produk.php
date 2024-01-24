@@ -31,11 +31,13 @@ class Produk extends Migration
                 'type' => 'INT',
                 'constraint' => 11,
                 'unsigned' => true,
+                'default' => 0,
             ],
             'masa_garansi' => [
                 'type' => 'INT',
                 'constraint' => 5,
                 'unsigned' => true,
+                'default' => 0,
             ],
             'merek_id' => [
                 'type' => 'INT',

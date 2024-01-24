@@ -50,7 +50,9 @@ class Accounts extends BaseController
         $validation = \Config\Services::validation();
         $validation->setRules([
             'username' => ['required', 'max_length[20]'],
+            'fullname' => ['required', 'max_length[50]'],
             'password' => ['required', 'min_length[6]'],
+            'password_conf' => ['required', 'matches[password]'],
         ]);
         $isDataValid = $validation->withRequest($this->request)->run();
 
